@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Stare {
+    int a, b, parinte;
+    string op;
+};
+
+int A, B, C;
+bool v[1002][1002];
+vector <Stare> q;
+
+int nrPasi(int poz) {
+    int nr = 0;
+    while (q[poz].parinte != -1) {
+        nr++;
+        poz = q[poz].parinte;
+    }
+    return nr;
+}
+
+void afisareDrum(int poz) {
+    if (q[poz].parinte == -1)
+        return;
+    afisareDrum(q[poz].parinte);
+    cout << q[poz].op << "\n";
+}
+
+int main()
+{
+    cin >> A >> B >> C;
+    q.push_back({0, 0, -1, ""});
+    v[0][0] = true;
+    int prim = 0;
+    while (prim < (int)q.size()) {
+        int a = q[prim].a, b = q[prim].b;
+        if (a == C || b == C) {
+            cout << nrPasi(prim) << "\n";
+            afisareDrum(prim);
+            exit(0);
+        }
+        if (!v[A][b])
+            v[A][b] = true, q.push_back({A, b, prim, "R A"});
+        if (!v[a][B])
+            v[a][B] = true, q.push_back({a, B, prim, "R B"});
+        if (!v[0][b])
+            v[0][b] = true, q.push_back({0, b, prim, "A C"});
+        if (!v[a][0])
+            v[a][0] = true, q.push_back({a, 0, prim, "B C"});
+        int mutatB = min(a, B - b);
+        if (!v[a - mutatB][b + mutatB])
+            v[a - mutatB][b + mutatB] = true, q.push_back({a - mutatB, b + mutatB, prim, "A B"});
+        int mutatA = min(b, A - a);
+        if (!v[a + mutatA][b - mutatA])
+            v[a + mutatA][b - mutatA] = true, q.push_back({a + mutatA, b - mutatA, prim, "B A"});
+        prim++;
+    }
+
+    return 0;
+}

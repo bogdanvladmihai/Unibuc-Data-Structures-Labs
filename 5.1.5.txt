@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string removeDuplicates(string sir, int k) {
+    vector <pair<char, int>> s;
+    for (char ch : sir) {
+        if (!s.empty() && s.back().first == ch) {
+            s.back().second++;
+            if (s.back().second == k)
+                s.pop_back();
+        }
+        else
+            s.push_back({ch, 1});
+    }
+    string ans = "";
+    for (auto it : s)
+        ans.append(it.second, it.first);
+    return ans;
+}
+
+int main()
+{
+    string sir = "deeedbbcccbdaa";
+    int k = 3;
+    cout << removeDuplicates(sir, k) << "\n";
+
+    return 0;
+}
