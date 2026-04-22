@@ -1,0 +1,54 @@
+Solutia in O(nlogn)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int n, m, st, dr, target, a[302][302];
+int main()
+{
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            cin >> a[i][j];
+    cin >> target;
+    for (int i = 1; i <= n; i++) {
+        if (target  >= a[i][1] and target <= a[i][m]) {
+            st = 1, dr = m;
+            while (st <= dr) {
+                int mij = (st + dr) / 2;
+                if (a[i][mij] == target)
+                    cout << "True", exit(0);
+                else if (a[i][mij] > target)
+                    dr = mij - 1;
+                else
+                    st = mij + 1;
+            }
+        }
+    }
+    cout << "False";
+}
+
+Solutia in O(n)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int n, m, target, a[302][302], i, j;
+int main()
+{
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            cin >> a[i][j];
+    cin >> target;
+    i = 1, j = m;
+    while (i <= n && j > 0) {
+        if (a[i][j] == target)
+            cout << "True", exit(0);
+        else if (a[i][j] > target)
+            j--;
+        else
+            i++;
+    }
+    cout << "False";
+}
