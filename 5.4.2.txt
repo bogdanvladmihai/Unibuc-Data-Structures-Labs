@@ -1,0 +1,18 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long n, st, dr, mij, ans;
+int main() {
+    cin >> n;
+    st = 1, dr = n;
+    while (st <= dr) {
+        long long mij = (st + dr) / 2;
+        if (mij <= n / mij)
+            ans = mij, st = mij + 1;
+        else
+            dr = mij - 1;
+    }
+    cout << ans;
+
+    return 0;
+}
