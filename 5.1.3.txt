@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+ifstream f("fadema.in");
+ofstream g("fadema.out");
+
+void calcul_st(int h[], int st[], int n) {
+    stack <int> s;
+    for (int i = 1; i <= n; i++) {
+        while (!s.empty() && h[s.top()] >= h[i])
+            s.pop();
+        if (!s.empty())
+            st[i] = s.top();
+        else
+            st[i] = 0;
+        s.push(i);
+    }
+}
+
+void calcul_dr(int h[], int dr[], int n) {
+    stack <int> s;
+    for (int i = n; i > 0; i--) {
+        while (!s.empty() && h[s.top()] >= h[i])
+            s.pop();
+        if (!s.empty())
+            dr[i] = s.top();
+        else
+            dr[i] = n + 1;
+        s.push(i);
+    }
+}
+
+int n, m, x, ans, st[1002], dr[1002], a[1002][1002], h[1002];
+stack <int> s, s1;
+int main()
+{
+    f >> n >> m;
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            f >> x, a[i][j] = x ^ ((i + j) % 2);
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (a[i][j] == 0)
+                h[j]++;
+            else
+                h[j] = 0;
+        }
+        calcul_st(h, st, m);
+        calcul_dr(h, dr, m);
+        for (int j = 1; j <= m; j++)
+            ans = max(ans, h[j] * (dr[j] - st[j] - 1));
+    }
+    for (int i = 1; i <= m; i++)
+        h[i] = 0;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (a[i][j] == 1)
+                h[j]++;
+            else
+                h[j] = 0;
+        }
+        calcul_st(h, st, m);
+        calcul_dr(h, dr, m);
+        for (int j = 1; j <= m; j++)
+            ans = max(ans, h[j] * (dr[j] - st[j] - 1));
+    }
+    g << ans;
+
+    return 0;
+}

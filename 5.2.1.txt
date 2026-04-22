@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+ifstream f("alee.in");
+ofstream g("alee.out");
+
+int x[] = {0, 0, -1, 1};
+int y[] = {1, -1, 0, 0};
+
+int n, m, i, j, d[1002][1002], linie_start, coloana_start, stop_linie, stop_coloana;
+bool a[1002][1002];
+
+bool inmat(int i, int j) {
+    return i > 0 && i <= n && j > 0 && j <= n;
+}
+
+void lee(int linie, int coloana) {
+    queue <pair<int, int>> q;
+    d[linie][coloana] = 1;
+    q.push(make_pair(linie, coloana));
+    while (!q.empty()) {
+        int i = q.front().first, j = q.front().second;
+        q.pop();
+        for (int k = 0; k < 4; k++) {
+            int ii = i + x[k], jj = j + y[k];
+            if (inmat(ii, jj) and a[ii][jj] == 0 and d[ii][jj] == 0) {
+                d[ii][jj] = d[i][j] + 1;
+                q.push(make_pair(ii, jj));
+            }
+        }
+    }
+}
+
+int main()
+{
+    f >> n >> m;
+    while (m--) {
+        f >> i >> j;
+        a[i][j] = 1;
+    }
+    f >> linie_start >> coloana_start >> stop_linie >> stop_coloana;
+    lee(linie_start, coloana_start);
+    g << d[stop_linie][stop_coloana];
+
+    return 0;
+}
