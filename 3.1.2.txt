@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class HashTable {
+private:
+    vector <int> table, state;
+    int nr, used, capacity;
+    void resize() {
+        int old_cap = capacity;
+        vector<int> old_table = table;
+        vector<int> old_state = state;
+        capacity *= 2;
+        table.assign(capacity, 0);
+        state.assign(capacity, 0);
+        nr = 0;
+        used = 0;
+        for (int i = 0; i < old_cap; i++)
+            if (old_state[i] == 1)
+                insert(old_table[i]);
+    }
+
+public:
+    HashTable() {
+        capacity = 8;
+        nr = used = 0;
+        table.assign(capacity, 0);
+        state.assign(capacity, 0);
+    }
+    bool exists(int x) {
+        if (capacity == 0)
+            return false;
+        int poz = abs(x) % capacity;
+        while (state[poz] != 0) {
+            if (state[poz] == 1 && table[poz] == x)
+                return true;
+            poz = (poz + 1) % capacity;
+        }
+        return false;
+    }
+    void insert(int x) {
+        if (exists(x))
+            return;
+        if (used * 2 >= capacity)
+            resize();
+        int poz = abs(x) % capacity;
+        while (state[poz] == 1)
+            poz = (poz + 1) % capacity;
+        if (state[poz] == 0)
+            used++;
+        state[poz] = 1;
+        table[poz] = x;
+        nr++;
+    }
+    void erase(int x) {
+        if (capacity == 0)
+            return;
+        int poz = abs(x) % capacity;
+        while (state[poz] != 0) {
+            if (state[poz] == 1 && table[poz] == x) {
+                state[poz] = 2;
+                nr--;
+                return;
+            }
+            poz = (poz + 1) % capacity;
+        }
+    }
+};
+
+HashTable ht;
+int q, op, x;
+int main() 
+{
+    cin >> q;
+    while (q--) {
+        cin >> op >> x;
+        if (op == 1)
+            ht.insert(x);
+        else if (op == 2)
+            ht.erase(x);
+        else if (op == 3)
+            cout << (ht.exists(x) ? 1 : 0) << "\n";
+    }
+
+    return 0;
+}
