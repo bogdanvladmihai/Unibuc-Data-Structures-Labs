@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(vector <int> a) {
+    int nr = a[0];
+    int nr2 = a[0];
+    do {
+        nr = a[nr];
+        nr2 = a[a[nr2]];
+    } while (nr != nr2);
+    nr = a[0];
+    while (nr != nr2) {
+        nr = a[nr];
+        nr2 = a[nr2];
+    }
+    return nr;
+}
+
+int n, x;
+vector <int> a;
+int main()
+{
+    cin >> n;
+    for (int i = 1; i <= n + 1; i++)
+        cin >> x, a.push_back(x);
+    cout << solve(a);
+
+    return 0;
+}

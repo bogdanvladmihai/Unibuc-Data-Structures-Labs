@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Vector {
+    int* array;
+    int capacity, size;
+};
+
+void init(Vector& v) {
+    v.capacity = 1;
+    v.size = 0;
+    v.array = new int[v.capacity];
+}
+
+void push_back(Vector& v, int value) {
+    if (v.size == v.capacity) {
+        v.capacity = v.capacity * 2;
+        int* a = new int[v.capacity];
+        for (int i = 0; i < v.size; i++)
+            a[i] = v.array[i];
+        delete[] v.array;
+        v.array = a;
+    }
+    v.array[v.size] = value;
+    v.size++;
+}
+
+int get_size(Vector& v) {
+    return v.size;
+}
+
+void pop_back(Vector& v) {
+    if (v.size > 0)
+        v.size--;
+}
+
+int main() {
+    Vector v;
+    init(v);
+    push_back(v, 10);
+    push_back(v, 20);
+    push_back(v, 30);
+    push_back(v, 40);
+    push_back(v, 50);
+    for (int i = 0; i < get_size(v); i++)
+        cout << v.array[i] << " ";
+
+    return 0;
+}
