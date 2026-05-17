@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string solve(string sir) {
+    int n = sir.length();
+    vector <int> frecventa(256, 0);
+    vector <int> poz(256, -1);
+    for (int i = 0; i < n; i++) {
+        frecventa[sir[i]]++;
+        poz[sir[i]] = i;
+    }
+    string s = "";
+    vector <bool> v(256, false);
+    for (int i = 0; i < n; i++) {
+        char ch = sir[i];
+        if (frecventa[ch] % 2 == 0)
+            continue;
+        if (v[ch])
+            continue;
+        while (!s.empty() && s.back() > ch && poz[s.back()] > i) {
+            v[s.back()] = false;
+            s.pop_back();
+        }
+        s.push_back(ch);
+        v[ch] = true;
+    }
+    return s;
+}
+
+int main()
+{
+    string sir;
+    sir = "cbacdcbc";
+    cout << solve(sir);
+
+    return 0;
+}
