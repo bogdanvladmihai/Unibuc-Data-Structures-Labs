@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+ifstream f("subsecvente2.in");
+ofstream g("subsecvente2.out");
+
+int n, i, st, dr, ans, mij, s[7];
+string a[7];
+
+bool verif(int x) {
+    unordered_map <unsigned long long, bitset<5>> M;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j + x <= s[i]; j++) {
+            unsigned long long nr = 0;
+            int poz = 0;
+            for (int k = j; k < x + j; k++, poz++)
+                if (a[i][k] == 'b')
+                    nr = nr | (1ULL << poz);
+            M[nr][i] = 1;
+        }
+    }
+    for (auto it : M)
+        if (it.second == (1ULL << (n + 1)) - 2)
+            return 1;
+    return 0;
+}
+
+int main()
+{
+    f >> n;
+    for (i = 1; i <= n; i++)
+        f >> a[i], s[i] = a[i].size();
+    st = 1, dr = 60;
+    while (st <= dr) {
+        mij = (st + dr) / 2;
+        if (verif(mij))
+            ans = mij, st = mij + 1;
+        else
+            dr = mij - 1;
+    }
+    g << ans;
+
+
+
+    return 0;
+
+}

@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long INF = 1e15;
+
+int n, q, l, r;
+long long k;
+int main()
+{
+    cin >> n >> q;
+    vector <long long> a(n + 1), sp(n + 1, 0);
+    vector <int> pos(n + 1, 0), pre(n + 1, 0);
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+        if (a[i] < 0 || a[i] >= n) {
+            sp[i] = sp[i - 1] + INF;
+            pre[i] = pre[i - 1];
+        }
+        else {
+            sp[i] = sp[i - 1] + a[i];
+            pre[i] = max(pre[i - 1], pos[a[i]]);
+            pos[a[i]] = i;
+        }
+    }
+    for (int i = 0; i < q; i++) {
+        cin >> l >> r;
+        k = r - l + 1;
+        if (pre[r] >= l)
+            cout << "NO";
+        else if (1LL * k * (k - 1) / 2 != sp[r] - sp[l - 1])
+            cout << "NO";
+        else
+            cout << "YES";
+        cout << "\n";
+    }
+
+    return 0;
+}

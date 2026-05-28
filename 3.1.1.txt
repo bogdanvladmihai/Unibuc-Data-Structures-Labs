@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class HashTable {
+private:
+    vector <list<int>> table;
+    int nr;
+    int capacity;
+    void resize() {
+        int new_capacity = capacity * 2;
+        vector <list<int>> new_table(new_capacity);
+        for (int i = 0; i < capacity; i++) {
+            for (int item : table[i]) {
+                int poz = abs(item) % new_capacity;
+                new_table[poz].push_front(item);
+            }
+        }
+        table = move(new_table);
+        capacity = new_capacity;
+    }
+
+public:
+    HashTable() {
+        capacity = 8;
+        nr = 0;
+        table.resize(capacity);
+    }
+    bool exists(int x) {
+        if (capacity == 0)
+            return false;
+        int poz = abs(x) % capacity;
+        for (int item : table[poz])
+            if (item == x)
+                return true;
+        return false;
+    }
+    void insert(int x) {
+        if (exists(x))
+            return;
+        if (nr >= capacity)
+            resize();
+        int poz = abs(x) % capacity;
+        table[poz].push_front(x);
+        nr++;
+    }
+    void erase(int x) {
+        if (capacity == 0)
+            return;
+        int poz = abs(x) % capacity;
+        for (auto it = table[poz].begin(); it != table[poz].end(); it++) {
+            if (*it == x) {
+                table[poz].erase(it);
+                nr--;
+                return;
+            }
+        }
+    }
+};
+
+HashTable ht;
+int q, op, x;
+int main()
+{
+    cin >> q;
+    while (q--) {
+        cin >> op >> x;
+        if (op == 1)
+            ht.insert(x);
+        else if (op == 2)
+            ht.erase(x);
+        else if (op == 3)
+            cout << (ht.exists(x) ? 1 : 0) << "\n";
+    }
+
+    return 0;
+}

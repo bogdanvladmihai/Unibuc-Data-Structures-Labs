@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MOD = 1e9 + 7;
+const int P = 31;
+
+int n, m;
+string s;
+long long pre[100005][26];
+int main()
+{
+    cin >> n >> m;
+    long long p_pow = 1;
+    for (int j = m - 1; j >= 0; j--) {
+        for (int c = 0; c < 26; c++)
+            pre[j][c] = (1LL * (c + 1) * p_pow) % MOD;
+        p_pow = (p_pow * P) % MOD;
+    }
+    for (int i = 1; i <= n; i++) {
+        cin >> s;
+        unsigned long long h = 0;
+        for (int j = 0; j < m; j++)
+            h = h + pre[j][s[j] - 'a'];
+        cout << h % MOD << "\n";
+    }
+
+    return 0;
+}

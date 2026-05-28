@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+ifstream f("secv5.in");
+ofstream g("secv5.out");
+
+int n, l, u, a[1000002];
+unordered_map <int, int> fr;
+
+long long solve(int k) {
+    if (k == 0)
+        return 0;
+    fr.clear();
+    long long ans = 0;
+    int st = 1, dist = 0;
+    for (int dr = 1; dr <= n; dr++) {
+        if (fr[a[dr]] == 0)
+            dist++;
+        fr[a[dr]]++;
+        while (dist > k) {
+            fr[a[st]]--;
+            if (fr[a[st]] == 0)
+                dist--;
+            st++;
+        }
+        ans = ans + (dr - st + 1);
+    }
+    return ans;
+}
+
+int main()
+{
+    f >> n >> l >> u;
+    for (int i = 1; i <= n; i++)
+        f >> a[i];
+    g << solve(u) - solve(l - 1) << "\n";
+
+    return 0;
+}

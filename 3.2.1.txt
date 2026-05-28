@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+pair <int, int> a[1000005];
+int n, s, ans[3];
+int main()
+{
+    cin >> n >> s;
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i].first;
+        a[i].second = i;
+    }
+    sort(a + 1, a + n + 1);
+    for (int i = 1; i <= n - 2; i++) {
+        int st = i + 1, dr = n;
+        int target = s - a[i].first;
+        while (st < dr) {
+            int sum = a[st].first + a[dr].first;
+            if (sum == target) {
+                ans[0] = a[i].second;
+                ans[1] = a[st].second;
+                ans[2] = a[dr].second;
+                sort(ans, ans + 3);
+                cout << ans[0] << " " << ans[1] << " " << ans[2];
+                exit(0);
+            }
+            if (sum < target)
+                st++;
+            else
+                dr--;
+        }
+    }
+
+    return 0;
+}
